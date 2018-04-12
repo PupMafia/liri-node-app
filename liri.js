@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require('fs');
 var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
@@ -63,3 +64,11 @@ if (command === "movie-this" && input != undefined) {
         console.log('body:', body); // Print the HTML for the Google homepage.
     });
 }
+
+//fs
+fs.open('random.txt', 'r', (err, fd) => {
+    if (err) throw err;
+    fs.close(fd, (err) => {
+      if (err) throw err;
+    });
+  });
