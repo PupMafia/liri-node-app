@@ -8,12 +8,11 @@ var client = new Twitter(keys.twitter);
 var params = {
     screen_name: 'joshsan111'
 };
-var input = process.argv[2];
-var song = process.argv[3];
-var defaultSong = 'The Sign';
+var command = process.argv[2];
+var input = process.argv[3];
 
 //Twitter
-if (input === "my-tweets") {
+if (command === "my-tweets") {
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             for (i = 0; i < tweets.length; i++) {
@@ -24,10 +23,10 @@ if (input === "my-tweets") {
 }
 
 //Spotify
-if (input === "spotify-this-song" || song != undefined) {
+if (command === "spotify-this-song" && input != undefined) {
     spotify.search({
         type: 'track',
-        query: song,
+        query: input,
         limit: 1
     }, function (err, data) {
         if (err) {
@@ -36,10 +35,10 @@ if (input === "spotify-this-song" || song != undefined) {
 
         console.log(data.tracks.items[0].album);
     })
-} else {
+} else if (command === "spotify-this-song") {
     spotify.search({
         type: 'track',
-        query: defaultSong,
+        query: 'the sign',
         limit: 1
     }, function (err, data) {
         if (err) {
@@ -50,3 +49,17 @@ if (input === "spotify-this-song" || song != undefined) {
     })
 }
 
+//OMDB
+if (command === "movie-this" && input != undefined) {
+    request('http://www.omdbapi.com/?t=' + input + '&apikey=33fbbbc', function (error, response, body) {
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        console.log('body:', body); // Print the HTML for the Google homepage.
+    });
+} else if (command === "movie-this") {
+    request('http://www.omdbapi.com/?i=tt0485947&apikey=33fbbbc', function (error, response, body) {
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        console.log('body:', body); // Print the HTML for the Google homepage.
+    });
+}
